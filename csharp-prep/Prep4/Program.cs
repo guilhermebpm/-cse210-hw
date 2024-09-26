@@ -25,6 +25,21 @@ class Program
             sum += number;
         }
 
+        double average = numbers.Average();
+
+        int largestNumber = numbers.Max();
+
+        int smallestPositiveNumber = numbers.Where(n => n > 0).Min();
+        numbers.Sort();
+
         Console.WriteLine($"The sum is: {sum}");
+        Console.WriteLine($"The average is: {average}");
+        Console.WriteLine($"The largest number is: {largestNumber}");
+        Console.WriteLine($"The smallest positive number is: {smallestPositiveNumber}");
+        Console.WriteLine("The sorted list is:");
+        foreach (int number in numbers)
+        {
+            Console.WriteLine(number);
+        }
     }
 }
