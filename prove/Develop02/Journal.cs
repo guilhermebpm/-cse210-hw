@@ -4,7 +4,7 @@ using System.IO;
 
 public class Journal
 {
-    private List<Entry> _entries = new List<Entry>();
+    public List<Entry> _entries = new List<Entry>();
 
     public void AddEntry(Entry newEntry)
     {
@@ -13,36 +13,47 @@ public class Journal
 
     public void DisplayAll()
     {
-        foreach (var entry in _entries)
+    foreach (var entry in _entries)
         {
-            entry.Display(); 
+        Console.WriteLine(entry.ToString()); 
         }
     }
 
+
     public void SaveToFile(string file)
     {
-        using (StreamWriter writer = new StreamWriter(file))
+    string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "journals");
+    Directory.CreateDirectory(directoryPath);
+    string filePath = Path.Combine(directoryPath, file);
+
+    using (StreamWriter writer = new StreamWriter(filePath))
+    {
+        foreach (var entry in _entries)
         {
-            foreach (var entry in _entries)
-            {
-                writer.WriteLine($"{entry.Date}|{entry.PromptText}|{entry.EntryText}");
-            }
+            writer.WriteLine($"{entry._date}|{entry._promptText}|{entry._entryText}");
         }
+    }
     }
 
     public void LoadFromFile(string file)
     {
-        if (File.Exists(file))
+    
+    string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "journals");
+    string filePath = Path.Combine(directoryPath, file);
+    
+    if (File.Exists(filePath))
+    {
+        string[] lines = File.ReadAllLines(filePath);
+        foreach (var line in lines)
         {
-            string[] lines = File.ReadAllLines(file);
-            foreach (var line in lines)
+            var parts = line.Split('|');
+            if (parts.Length == 3)
             {
-                var parts = line.Split('|');
-                if (parts.Length == 3)
-                {
-                    _entries.Add(new Entry(parts[1], parts[2]) { Date = parts[0] });
-                }
+                var entry = new Entry(parts[1], parts[2]);
+                typeof(Entry).GetProperty("Date").SetValue(entry, parts[0]);
+                _entries.Add(entry);
             }
         }
+    }
     }
 }

@@ -37,15 +37,15 @@ class Program
                     break;
 
                 case "3":
-                    Console.Write("File name: ");
-                    string saveFileName = Console.ReadLine();
-                    myJournal.SaveToFile(saveFileName);
+                    Console.Write("File Name: ");
+                    string loadFileName = Console.ReadLine();
+                    myJournal.SaveToFile(loadFileName);
                     break;
 
                 case "4":
-                    Console.Write("File Name: ");
-                    string loadFileName = Console.ReadLine();
-                    myJournal.LoadFromFile(loadFileName);
+                    Console.Write("File name: ");
+                    string saveFileName = Console.ReadLine();
+                    myJournal.LoadFromFile(saveFileName);
                     break;
 
                 case "5":
