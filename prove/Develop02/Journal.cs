@@ -13,47 +13,54 @@ public class Journal
 
     public void DisplayAll()
     {
-    foreach (var entry in _entries)
+        foreach (var entry in _entries)
         {
-        Console.WriteLine(entry.ToString()); 
+            Console.WriteLine(entry.ToString());
         }
     }
-
 
     public void SaveToFile(string file)
     {
-    string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "journals");
-    Directory.CreateDirectory(directoryPath);
-    string filePath = Path.Combine(directoryPath, file);
+        string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "journals");
+        Directory.CreateDirectory(directoryPath);
+        string filePath = Path.Combine(directoryPath, file);
 
-    using (StreamWriter writer = new StreamWriter(filePath))
-    {
-        foreach (var entry in _entries)
+        using (StreamWriter writer = new StreamWriter(filePath))
         {
-            writer.WriteLine($"{entry._date}|{entry._promptText}|{entry._entryText}");
+            foreach (var entry in _entries)
+            {
+                writer.WriteLine($"{entry._date}|{entry._promptText}|{entry._entryText}");
+            }
         }
-    }
+        Console.WriteLine("Journal saved successfully.");
     }
 
     public void LoadFromFile(string file)
     {
-    
-    string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "journals");
-    string filePath = Path.Combine(directoryPath, file);
-    
-    if (File.Exists(filePath))
-    {
-        string[] lines = File.ReadAllLines(filePath);
-        foreach (var line in lines)
+        string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "journals");
+        string filePath = Path.Combine(directoryPath, file);
+
+        if (File.Exists(filePath))
         {
-            var parts = line.Split('|');
-            if (parts.Length == 3)
+            _entries.Clear(); // Limpa as entradas atuais antes de carregar as novas
+            string[] lines = File.ReadAllLines(filePath);
+            foreach (var line in lines)
             {
-                var entry = new Entry(parts[1], parts[2]);
-                typeof(Entry).GetProperty("Date").SetValue(entry, parts[0]);
-                _entries.Add(entry);
+                var parts = line.Split('|');
+                if (parts.Length == 3)
+                {
+                    var entry = new Entry(parts[1], parts[2])
+                    {
+                        _date = parts[0] // Define diretamente a data
+                    };
+                    _entries.Add(entry);
+                }
             }
+            Console.WriteLine("Entries loaded successfully.");
         }
-    }
+        else
+        {
+            Console.WriteLine("File not found: " + filePath);
+        }
     }
 }

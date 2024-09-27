@@ -36,16 +36,16 @@ class Program
                     myJournal.DisplayAll();
                     break;
 
-                case "3":
-                    Console.Write("File Name: ");
-                    string loadFileName = Console.ReadLine();
-                    myJournal.SaveToFile(loadFileName);
+                 case "3":
+                    Console.Write("File name to save: ");
+                    string saveFileName = Console.ReadLine();
+                    myJournal.SaveToFile(saveFileName);
                     break;
 
                 case "4":
-                    Console.Write("File name: ");
-                    string saveFileName = Console.ReadLine();
-                    myJournal.LoadFromFile(saveFileName);
+                    Console.Write("File name to load: ");
+                    string loadFileName = Console.ReadLine();
+                    myJournal.LoadFromFile(loadFileName);
                     break;
 
                 case "5":
