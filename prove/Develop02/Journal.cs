@@ -21,19 +21,27 @@ public class Journal
 
     public void SaveToFile(string file)
     {
-        string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "journals");
-        Directory.CreateDirectory(directoryPath);
-        string filePath = Path.Combine(directoryPath, file);
-
-        using (StreamWriter writer = new StreamWriter(filePath))
-        {
-            foreach (var entry in _entries)
-            {
-                writer.WriteLine($"{entry._date}|{entry._promptText}|{entry._entryText}");
-            }
-        }
-        Console.WriteLine("Journal saved successfully.");
+    if (!file.EndsWith(".csv"))
+    {
+        file += ".csv";
     }
+
+    string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "journals");
+    Directory.CreateDirectory(directoryPath);
+    string filePath = Path.Combine(directoryPath, file);
+
+    using (StreamWriter writer = new StreamWriter(filePath))
+    {
+        writer.WriteLine("Date,Prompt,Entry");
+
+        foreach (var entry in _entries)
+        {
+            writer.WriteLine($"\"{entry._date}\",\"{entry._promptText}\",\"{entry._entryText}\"");
+        }
+    }
+    Console.WriteLine("Journal saved successfully as CSV.");
+    }
+
 
     public void LoadFromFile(string file)
     {
